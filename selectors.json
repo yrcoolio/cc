@@ -1,96 +1,294 @@
 {
-  "version": "2.0.1",
-  "updatedAt": "2025-12-15T00:00:00.000Z",
+  "version": "2.1.0",
+  "updatedAt": "2025-12-15T08:00:00.000Z",
   "minAppVersion": "3.0.0",
-  "source": "example",
+  "source": "remote",
   "plugins": {
+    "JavDB": {
+      "contentIndicators": [".video-detail", ".movie-panel-info", ".panel-block"],
+      "notFoundIndicators": [".empty-message", ".error-page"],
+      "title": [
+        { "type": "simple", "selector": ".video-detail h2 .current-title", "transform": "trim" },
+        { "type": "simple", "selector": ".video-detail h2", "transform": "trim" }
+      ],
+      "performers": [
+        {
+          "type": "list",
+          "selector": ".panel-block:has(strong) .value a",
+          "filter": "^(?!.*(?:片商|系列|導演|類別)).+"
+        }
+      ],
+      "releaseDate": [
+        {
+          "type": "label",
+          "labels": ["日期", "Date"],
+          "containerSelector": ".panel-block",
+          "valueSelector": ".value"
+        }
+      ],
+      "duration": [
+        {
+          "type": "label",
+          "labels": ["時長", "Duration"],
+          "containerSelector": ".panel-block",
+          "valueSelector": ".value"
+        }
+      ],
+      "studio": [
+        {
+          "type": "label",
+          "labels": ["片商", "Studio", "Maker"],
+          "containerSelector": ".panel-block",
+          "valueSelector": ".value a"
+        }
+      ],
+      "director": [
+        {
+          "type": "label",
+          "labels": ["導演", "Director"],
+          "containerSelector": ".panel-block",
+          "valueSelector": ".value a"
+        }
+      ],
+      "series": [
+        {
+          "type": "label",
+          "labels": ["系列", "Series"],
+          "containerSelector": ".panel-block",
+          "valueSelector": ".value a"
+        }
+      ],
+      "tags": [
+        {
+          "type": "list",
+          "selector": ".panel-block:has(strong) .value a"
+        }
+      ],
+      "poster": [
+        { "type": "simple", "selector": "a#x-cover", "attribute": "href" },
+        { "type": "simple", "selector": "img.video-cover", "attribute": "src" }
+      ],
+      "description": [
+        { "type": "simple", "selector": ".video-detail h2 .origin-title", "transform": "trim" }
+      ]
+    },
     "JavBus": {
-      "contentIndicators": ["body"],
-      "notFoundIndicators": [".not-found", ".error-404"],
-      "title": [{ "type": "simple", "selector": "h1", "transform": "trim" }],
-      "performers": [{ "type": "list", "selector": ".performers a" }],
-      "releaseDate": [{ "type": "label", "labels": ["Release Date", "發行日期", "发行日期"] }],
-      "duration": [{ "type": "label", "labels": ["Duration", "長度", "时长"] }],
-      "studio": [{ "type": "label", "labels": ["Studio", "製作商", "制作商"] }],
-      "tags": [{ "type": "list", "selector": ".tags a" }],
-      "poster": [{ "type": "simple", "selector": "img", "attribute": "src" }]
+      "contentIndicators": [".container", ".movie", ".bigImage"],
+      "notFoundIndicators": [".alert-danger", ".error-404"],
+      "title": [
+        { "type": "simple", "selector": "h3", "transform": "trim" },
+        { "type": "simple", "selector": ".title", "transform": "trim" }
+      ],
+      "performers": [
+        {
+          "type": "list",
+          "selector": ".star-name a",
+          "filter": "^(?!.*(?:一覧|AV女優|http|www)).{2,}$"
+        },
+        { "type": "list", "selector": "#star-div .avatar-box .star-name" }
+      ],
+      "releaseDate": [
+        { "type": "label", "labels": ["發行日期", "日期", "Release Date"] },
+        { "type": "regex", "pattern": "發行日期[：:]\\s*([\\d-]+)", "group": 1 }
+      ],
+      "duration": [
+        { "type": "label", "labels": ["長度", "時長", "Duration"] },
+        { "type": "regex", "pattern": "長度[：:]\\s*(\\d+)", "group": 1 }
+      ],
+      "studio": [{ "type": "label", "labels": ["製作商", "Studio", "Maker"] }],
+      "director": [{ "type": "label", "labels": ["導演", "Director"] }],
+      "series": [{ "type": "label", "labels": ["系列", "Series"] }],
+      "tags": [
+        { "type": "list", "selector": ".genre label a" },
+        { "type": "list", "selector": ".genre a" }
+      ],
+      "poster": [
+        { "type": "simple", "selector": ".bigImage", "attribute": "href" },
+        { "type": "simple", "selector": ".bigImage img", "attribute": "src" }
+      ]
     },
     "DMM": {
-      "contentIndicators": ["body"],
-      "notFoundIndicators": [".d-item404", ".not-found"],
-      "title": [{ "type": "simple", "selector": "h1", "transform": "trim" }],
-      "performers": [{ "type": "list", "selector": ".performers a" }],
-      "releaseDate": [{ "type": "label", "labels": ["発売日", "配信開始日", "Release"] }],
-      "duration": [{ "type": "label", "labels": ["収録時間", "Duration"] }],
-      "studio": [{ "type": "label", "labels": ["メーカー", "Maker"] }],
-      "tags": [{ "type": "list", "selector": ".tags a" }],
-      "poster": [{ "type": "simple", "selector": "img", "attribute": "src" }]
-    },
-    "R18dev": {
-      "contentIndicators": ["body"],
-      "notFoundIndicators": [".not-found", ".error-404"],
-      "title": [{ "type": "simple", "selector": "h1", "transform": "trim" }],
-      "performers": [{ "type": "list", "selector": ".performers a" }],
-      "releaseDate": [{ "type": "label", "labels": ["Release", "配信開始日", "発売日"] }],
-      "duration": [{ "type": "label", "labels": ["Duration", "収録時間"] }],
-      "studio": [{ "type": "label", "labels": ["Studio", "メーカー"] }],
-      "tags": [{ "type": "list", "selector": ".tags a" }],
-      "poster": [{ "type": "simple", "selector": "img", "attribute": "src" }]
-    },
-    "AVBase": {
-      "contentIndicators": ["body"],
-      "notFoundIndicators": [".not-found", ".error-404"],
-      "title": [{ "type": "simple", "selector": "h1", "transform": "trim" }],
-      "performers": [{ "type": "list", "selector": ".performers a" }],
-      "releaseDate": [{ "type": "label", "labels": ["Release Date", "发行日期"] }],
-      "duration": [{ "type": "label", "labels": ["Duration", "时长"] }],
-      "studio": [{ "type": "label", "labels": ["Studio", "制作商"] }],
-      "tags": [{ "type": "list", "selector": ".tags a" }],
-      "poster": [{ "type": "simple", "selector": "img", "attribute": "src" }]
-    },
-    "JavDB": {
-      "contentIndicators": ["body"],
-      "notFoundIndicators": [".empty-message", ".error-page"],
-      "title": [{ "type": "simple", "selector": "h2", "transform": "trim" }],
-      "performers": [{ "type": "list", "selector": ".performers a" }],
-      "releaseDate": [{ "type": "label", "labels": ["日期", "Date"] }],
-      "duration": [{ "type": "label", "labels": ["時長", "Duration"] }],
-      "studio": [{ "type": "label", "labels": ["片商", "Studio", "Maker"] }],
-      "tags": [{ "type": "list", "selector": ".tags a" }],
-      "poster": [{ "type": "simple", "selector": "img", "attribute": "src" }]
-    },
-    "MissAV": {
-      "contentIndicators": ["body"],
-      "notFoundIndicators": [".not-found", ".error-404"],
-      "title": [{ "type": "simple", "selector": "h1", "transform": "trim" }],
-      "performers": [{ "type": "list", "selector": ".performers a" }],
-      "releaseDate": [{ "type": "label", "labels": ["Release Date", "发行日期"] }],
-      "duration": [{ "type": "label", "labels": ["Duration", "时长"] }],
-      "studio": [{ "type": "label", "labels": ["Studio", "制作商"] }],
-      "tags": [{ "type": "list", "selector": ".tags a" }],
-      "poster": [{ "type": "simple", "selector": "img", "attribute": "src" }]
-    },
-    "NetFlav": {
-      "contentIndicators": ["body"],
-      "notFoundIndicators": [".not-found", ".error-404"],
-      "title": [{ "type": "simple", "selector": "h1", "transform": "trim" }],
-      "performers": [{ "type": "list", "selector": ".performers a" }],
-      "releaseDate": [{ "type": "label", "labels": ["Release Date", "发行日期"] }],
-      "duration": [{ "type": "label", "labels": ["Duration", "时长"] }],
-      "studio": [{ "type": "label", "labels": ["Studio", "制作商"] }],
-      "tags": [{ "type": "list", "selector": ".tags a" }],
-      "poster": [{ "type": "simple", "selector": "img", "attribute": "src" }]
+      "contentIndicators": [
+        "script[type=\"application/ld+json\"]",
+        "h1.text-base",
+        "[data-e2eid=\"sample-image-gallery\"]",
+        ".productDetail-headline",
+        "h1#title"
+      ],
+      "notFoundIndicators": [".d-item404"],
+      "title": [
+        {
+          "type": "regex",
+          "pattern": "\"@type\"\\s*:\\s*\"Product\"[^}]*\"name\"\\s*:\\s*\"([^\"]+)\"",
+          "group": 1
+        },
+        { "type": "simple", "selector": "h1#title", "transform": "trim" },
+        { "type": "simple", "selector": ".productTitle h1", "transform": "trim" },
+        { "type": "simple", "selector": "h1.text-base", "transform": "trim" }
+      ],
+      "performers": [
+        { "type": "list", "selector": "a[href*=\"/actress=\"]" },
+        { "type": "list", "selector": "a[href*=\"actress/\"]" }
+      ],
+      "releaseDate": [
+        { "type": "regex", "pattern": "配信開始日[：:\\s]*([\\d年/\\-]+月?[\\d日]*)", "group": 1 },
+        { "type": "regex", "pattern": "商品発売日[：:\\s]*([\\d年/\\-]+月?[\\d日]*)", "group": 1 },
+        { "type": "regex", "pattern": "発売日[：:\\s]*([\\d年/\\-]+月?[\\d日]*)", "group": 1 },
+        { "type": "label", "labels": ["発売日", "配信開始日", "Release"] }
+      ],
+      "duration": [
+        { "type": "regex", "pattern": "収録時間[：:\\s]*(\\d+)分", "group": 1 },
+        { "type": "label", "labels": ["収録時間", "Duration"] }
+      ],
+      "studio": [
+        { "type": "list", "selector": "a[href*=\"/maker=\"]" },
+        { "type": "label", "labels": ["メーカー", "Maker"] }
+      ],
+      "director": [
+        { "type": "list", "selector": "a[href*=\"/director=\"]" },
+        { "type": "label", "labels": ["監督", "Director"] }
+      ],
+      "series": [
+        { "type": "list", "selector": "a[href*=\"/series=\"]" },
+        { "type": "label", "labels": ["シリーズ", "Series"] }
+      ],
+      "tags": [
+        { "type": "list", "selector": "a[href*=\"/genre=\"]" },
+        { "type": "list", "selector": "a[href*=\"genre/\"]" }
+      ],
+      "poster": [
+        { "type": "simple", "selector": "meta[property=\"og:image\"]", "attribute": "content" },
+        { "type": "simple", "selector": "a.d-modal__link", "attribute": "href" },
+        { "type": "simple", "selector": ".productPreview img", "attribute": "src" }
+      ],
+      "description": [
+        { "type": "simple", "selector": "meta[name=\"description\"]", "attribute": "content" },
+        {
+          "type": "simple",
+          "selector": "meta[property=\"og:description\"]",
+          "attribute": "content"
+        }
+      ]
     },
     "FC2": {
-      "contentIndicators": ["body"],
-      "notFoundIndicators": [".not-found", ".items_notfound_header"],
-      "title": [{ "type": "simple", "selector": "h3", "transform": "trim" }],
-      "performers": [{ "type": "list", "selector": ".performers a" }],
-      "releaseDate": [{ "type": "label", "labels": ["販売日", "Release"] }],
-      "duration": [{ "type": "label", "labels": ["再生時間", "Duration"] }],
-      "studio": [{ "type": "label", "labels": ["販売者", "Studio"] }],
-      "tags": [{ "type": "list", "selector": ".tags a" }],
-      "poster": [{ "type": "simple", "selector": "img", "attribute": "src" }]
+      "contentIndicators": [".items_article", ".c-goods-header", ".items_article_headerInfo"],
+      "notFoundIndicators": [".items_notfound_header", ".notfound"],
+      "title": [
+        { "type": "simple", "selector": ".items_article_headerInfo h3", "transform": "trim" },
+        { "type": "simple", "selector": ".c-goods-header__title", "transform": "trim" }
+      ],
+      "performers": [{ "type": "list", "selector": ".items_article_seller a" }],
+      "releaseDate": [
+        { "type": "label", "labels": ["販売日", "Release"] },
+        { "type": "regex", "pattern": "販売日[：:\\s]*([\\d年/\\-]+月?[\\d日]*)", "group": 1 }
+      ],
+      "duration": [{ "type": "regex", "pattern": "再生時間[：:\\s]*([\\d:]+)", "group": 1 }],
+      "studio": [{ "type": "simple", "selector": ".items_article_seller a", "transform": "trim" }],
+      "tags": [{ "type": "list", "selector": ".items_article_tagArea a" }],
+      "poster": [
+        { "type": "simple", "selector": ".items_article_MainitemThumb img", "attribute": "src" },
+        { "type": "simple", "selector": ".c-goods-slide__item img", "attribute": "src" }
+      ]
+    },
+    "MissAV": {
+      "contentIndicators": [".video-info", ".video-player", ".space-y-2"],
+      "notFoundIndicators": [".not-found", ".error-page"],
+      "title": [
+        { "type": "simple", "selector": "h1.text-base", "transform": "trim" },
+        { "type": "simple", "selector": "h1", "transform": "trim" }
+      ],
+      "performers": [
+        { "type": "list", "selector": "a[href*=\"/actresses/\"]" },
+        { "type": "list", "selector": ".space-y-2 a" }
+      ],
+      "releaseDate": [
+        { "type": "regex", "pattern": "発売日[：:\\s]*([\\d-]+)", "group": 1 },
+        { "type": "label", "labels": ["発売日", "Release"] }
+      ],
+      "duration": [
+        { "type": "regex", "pattern": "時間[：:\\s]*(\\d+)", "group": 1 },
+        { "type": "label", "labels": ["時間", "Duration"] }
+      ],
+      "studio": [{ "type": "label", "labels": ["メーカー", "Studio", "Maker"] }],
+      "tags": [
+        { "type": "list", "selector": "a[href*=\"/genres/\"]" },
+        { "type": "list", "selector": ".tags a" }
+      ],
+      "poster": [
+        { "type": "simple", "selector": "meta[property=\"og:image\"]", "attribute": "content" },
+        { "type": "simple", "selector": ".video-cover img", "attribute": "src" }
+      ]
+    },
+    "NetFlav": {
+      "contentIndicators": [".video-details", ".player-container", "article"],
+      "notFoundIndicators": [".not-found", ".error-page"],
+      "title": [
+        { "type": "simple", "selector": "h1.title", "transform": "trim" },
+        { "type": "simple", "selector": "h1", "transform": "trim" }
+      ],
+      "performers": [
+        { "type": "list", "selector": ".actress-name a" },
+        { "type": "list", "selector": "a[href*=\"/actress/\"]" }
+      ],
+      "releaseDate": [{ "type": "label", "labels": ["Date", "日期", "Release"] }],
+      "duration": [{ "type": "label", "labels": ["Duration", "時長"] }],
+      "studio": [{ "type": "label", "labels": ["Studio", "製作商", "Maker"] }],
+      "tags": [
+        { "type": "list", "selector": ".category-tags a" },
+        { "type": "list", "selector": "a[href*=\"/genre/\"]" }
+      ],
+      "poster": [
+        { "type": "simple", "selector": "meta[property=\"og:image\"]", "attribute": "content" },
+        { "type": "simple", "selector": ".poster img", "attribute": "src" }
+      ]
+    },
+    "R18dev": {
+      "contentIndicators": [".product-details", ".detail-content", "article"],
+      "notFoundIndicators": [".not-found", ".error-page"],
+      "title": [
+        { "type": "simple", "selector": "h1.product-title", "transform": "trim" },
+        { "type": "simple", "selector": "h1", "transform": "trim" }
+      ],
+      "performers": [
+        { "type": "list", "selector": ".product-actress-list a" },
+        { "type": "list", "selector": "a[href*=\"/actress/\"]" }
+      ],
+      "releaseDate": [{ "type": "label", "labels": ["Release Date", "発売日"] }],
+      "duration": [{ "type": "label", "labels": ["Runtime", "収録時間"] }],
+      "studio": [{ "type": "label", "labels": ["Studio", "メーカー"] }],
+      "director": [{ "type": "label", "labels": ["Director", "監督"] }],
+      "series": [{ "type": "label", "labels": ["Series", "シリーズ"] }],
+      "tags": [
+        { "type": "list", "selector": ".product-categories a" },
+        { "type": "list", "selector": "a[href*=\"/genre/\"]" }
+      ],
+      "poster": [
+        { "type": "simple", "selector": "meta[property=\"og:image\"]", "attribute": "content" },
+        { "type": "simple", "selector": ".product-image img", "attribute": "src" }
+      ]
+    },
+    "AVBase": {
+      "contentIndicators": [".movie-info", ".video-container", "article"],
+      "notFoundIndicators": [".not-found", ".error-page"],
+      "title": [
+        { "type": "simple", "selector": "h1.movie-title", "transform": "trim" },
+        { "type": "simple", "selector": "h1", "transform": "trim" }
+      ],
+      "performers": [
+        { "type": "list", "selector": ".actress-list a" },
+        { "type": "list", "selector": "a[href*=\"/actress/\"]" }
+      ],
+      "releaseDate": [{ "type": "label", "labels": ["発売日", "Release"] }],
+      "duration": [{ "type": "label", "labels": ["収録時間", "Duration"] }],
+      "studio": [{ "type": "label", "labels": ["メーカー", "Maker"] }],
+      "tags": [
+        { "type": "list", "selector": ".genre-list a" },
+        { "type": "list", "selector": "a[href*=\"/genre/\"]" }
+      ],
+      "poster": [
+        { "type": "simple", "selector": "meta[property=\"og:image\"]", "attribute": "content" },
+        { "type": "simple", "selector": ".movie-poster img", "attribute": "src" }
+      ]
     }
   }
 }
