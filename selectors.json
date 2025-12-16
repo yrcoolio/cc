@@ -1,5 +1,5 @@
 {
-  "version": "2.1.1",
+  "version": "2.1.0",
   "updatedAt": "2025-12-15T08:00:00.000Z",
   "minAppVersion": "3.0.0",
   "source": "remote",
@@ -118,15 +118,37 @@
       "notFoundIndicators": [".d-item404"],
       "title": [
         {
+          "type": "simple",
+          "selector": "meta[property=\"og:title\"]",
+          "attribute": "content",
+          "transform": "trim"
+        },
+        {
+          "type": "simple",
+          "selector": "meta[name=\"twitter:title\"]",
+          "attribute": "content",
+          "transform": "trim"
+        },
+        {
           "type": "regex",
-          "pattern": "\"@type\"\\s*:\\s*\"Product\"[^}]*\"name\"\\s*:\\s*\"([^\"]+)\"",
+          "pattern": "\"@type\"\\s*:\\s*\"BreadcrumbList\"[\\s\\S]*?\"name\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"position\"\\s*:\\s*4",
+          "group": 1
+        },
+        {
+          "type": "regex",
+          "pattern": "\"@type\"\\s*:\\s*\"(?:Product|VideoObject)\"[\\s\\S]*?\"name\"\\s*:\\s*\"([^\"]+)\"",
           "group": 1
         },
         { "type": "simple", "selector": "h1#title", "transform": "trim" },
         { "type": "simple", "selector": ".productTitle h1", "transform": "trim" },
+        { "type": "simple", "selector": ".productDetail-headline", "transform": "trim" },
         { "type": "simple", "selector": "h1.text-base", "transform": "trim" }
       ],
       "performers": [
+        { "type": "list", "selector": "#mu tr.actress a" },
+        { "type": "list", "selector": "tr.actress a" },
+        { "type": "list", "selector": ".actress a" },
+        { "type": "list", "selector": "#mu a[href*=\"/actress=\"]" },
         { "type": "list", "selector": "a[href*=\"/actress=\"]" },
         { "type": "list", "selector": "a[href*=\"actress/\"]" }
       ],
@@ -141,6 +163,9 @@
         { "type": "label", "labels": ["収録時間", "Duration"] }
       ],
       "studio": [
+        { "type": "list", "selector": "#mu tr.maker a" },
+        { "type": "list", "selector": "tr.maker a" },
+        { "type": "list", "selector": ".maker a" },
         { "type": "list", "selector": "a[href*=\"/maker=\"]" },
         { "type": "label", "labels": ["メーカー", "Maker"] }
       ],
@@ -153,6 +178,9 @@
         { "type": "label", "labels": ["シリーズ", "Series"] }
       ],
       "tags": [
+        { "type": "list", "selector": "#mu .genre a" },
+        { "type": "list", "selector": ".genre label a" },
+        { "type": "list", "selector": ".genre a" },
         { "type": "list", "selector": "a[href*=\"/genre=\"]" },
         { "type": "list", "selector": "a[href*=\"genre/\"]" }
       ],
