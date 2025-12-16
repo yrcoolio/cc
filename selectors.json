@@ -1,6 +1,6 @@
 {
-  "version": "2.1.0",
-  "updatedAt": "2025-12-15T08:00:00.000Z",
+  "version": "2.1.1",
+  "updatedAt": "2025-12-16T00:00:00.000Z",
   "minAppVersion": "3.0.0",
   "source": "remote",
   "plugins": {
@@ -111,6 +111,7 @@
       "contentIndicators": [
         "script[type=\"application/ld+json\"]",
         "h1.text-base",
+        "table.table-fixed",
         "[data-e2eid=\"sample-image-gallery\"]",
         ".productDetail-headline",
         "h1#title"
@@ -141,10 +142,12 @@
         },
         { "type": "simple", "selector": "h1#title", "transform": "trim" },
         { "type": "simple", "selector": ".productTitle h1", "transform": "trim" },
-        { "type": "simple", "selector": ".productDetail-headline", "transform": "trim" },
-        { "type": "simple", "selector": "h1.text-base", "transform": "trim" }
+        { "type": "simple", "selector": ".productDetail-headline", "transform": "trim" }
       ],
       "performers": [
+        { "type": "list", "selector": "table.table-fixed a[href*=\"actress=\"]" },
+        { "type": "list", "selector": "table.table-fixed a[href*=\"performer=\"]" },
+        { "type": "list", "selector": "table.table-fixed a[href*=\"actress/\"]" },
         { "type": "list", "selector": "#mu tr.actress a" },
         { "type": "list", "selector": "tr.actress a" },
         { "type": "list", "selector": ".actress a" },
@@ -153,16 +156,34 @@
         { "type": "list", "selector": "a[href*=\"actress/\"]" }
       ],
       "releaseDate": [
+        {
+          "type": "label",
+          "labels": ["配信開始日", "商品発売日", "発売日"],
+          "containerSelector": "table.table-fixed tbody tr",
+          "valueSelector": "td span"
+        },
         { "type": "regex", "pattern": "配信開始日[：:\\s]*([\\d年/\\-]+月?[\\d日]*)", "group": 1 },
         { "type": "regex", "pattern": "商品発売日[：:\\s]*([\\d年/\\-]+月?[\\d日]*)", "group": 1 },
         { "type": "regex", "pattern": "発売日[：:\\s]*([\\d年/\\-]+月?[\\d日]*)", "group": 1 },
         { "type": "label", "labels": ["発売日", "配信開始日", "Release"] }
       ],
       "duration": [
+        {
+          "type": "label",
+          "labels": ["収録時間"],
+          "containerSelector": "table.table-fixed tbody tr",
+          "valueSelector": "td span"
+        },
         { "type": "regex", "pattern": "収録時間[：:\\s]*(\\d+)分", "group": 1 },
         { "type": "label", "labels": ["収録時間", "Duration"] }
       ],
       "studio": [
+        {
+          "type": "label",
+          "labels": ["メーカー"],
+          "containerSelector": "table.table-fixed tbody tr",
+          "valueSelector": "td a"
+        },
         { "type": "list", "selector": "#mu tr.maker a" },
         { "type": "list", "selector": "tr.maker a" },
         { "type": "list", "selector": ".maker a" },
@@ -170,14 +191,29 @@
         { "type": "label", "labels": ["メーカー", "Maker"] }
       ],
       "director": [
+        {
+          "type": "label",
+          "labels": ["監督"],
+          "containerSelector": "table.table-fixed tbody tr",
+          "valueSelector": "td a"
+        },
+        { "type": "list", "selector": "table.table-fixed a[href*=\"director=\"]" },
         { "type": "list", "selector": "a[href*=\"/director=\"]" },
         { "type": "label", "labels": ["監督", "Director"] }
       ],
       "series": [
+        {
+          "type": "label",
+          "labels": ["シリーズ"],
+          "containerSelector": "table.table-fixed tbody tr",
+          "valueSelector": "td span"
+        },
+        { "type": "list", "selector": "table.table-fixed a[href*=\"series=\"]" },
         { "type": "list", "selector": "a[href*=\"/series=\"]" },
         { "type": "label", "labels": ["シリーズ", "Series"] }
       ],
       "tags": [
+        { "type": "list", "selector": "table.table-fixed a[href*=\"genre=\"]" },
         { "type": "list", "selector": "#mu .genre a" },
         { "type": "list", "selector": ".genre label a" },
         { "type": "list", "selector": ".genre a" },
